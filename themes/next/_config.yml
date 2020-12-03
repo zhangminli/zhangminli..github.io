@@ -503,13 +503,7 @@ math:
   every_page: true
 
   mathjax:
-<<<<<<< HEAD
     enable: true
-=======
-    enable: false
-    # Available values: none | ams | all
-    tags: none
->>>>>>> ff3b9571c0779c0ba583ee650c6fa647e3f6fef8
 
   katex:
     enable: false
