@@ -81,13 +81,13 @@ creative_commons:
 # External url should start with http:// or https://
 menu:
   home: / || fa fa-home
-  #about: /about/ || fa fa-user
-  #tags: /tags/ || fa fa-tags
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
   #categories: /categories/ || fa fa-th
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
-  commonweal: /404/ || fa fa-heartbeat
+  #commonweal: /404/ || fa fa-heartbeat
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -181,9 +181,9 @@ toc:
 # A button to open designated chat widget in sidebar.
 # Firstly, you need enable the chat service you want to activate its sidebar button.
 chat:
-  enable: true
+  enable: false
   #service: chatra
-  service: tidio
+  #service: tidio
   icon: fa fa-comment # Icon name in Font Awesome, set false to disable icon.
   text: Chat # Button text, change it as you wish.
 
@@ -213,7 +213,7 @@ footer:
   copyright: zhangml
 
   # Powered by Hexo & NexT
-  powered: false
+  powered: true
 
   # Beian ICP and gongan information for Chinese users. See: https://beian.miit.gov.cn, http://www.beian.gov.cn
   beian:
@@ -669,7 +669,7 @@ google_analytics:
   only_pageview: false
 
 # Baidu Analytics
-baidu_analytics: # <app_id>
+baidu_analytics: 3fcec3b37dd552fc3b6491514615e428 # <app_id>
 
 # Growingio Analytics
 growingio_analytics: # <project_id>
@@ -680,7 +680,7 @@ cnzz_siteid:
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
-  enable: true
+  enable: false
   app_id: # <your app id>
   app_key: # <your app key>
   # Required for apps from CN region
@@ -759,7 +759,7 @@ chatra:
 # See: https://www.tidio.com
 # Dashboard: https://www.tidio.com/panel/dashboard
 tidio:
-  enable: true
+  enable: false
   key: lwvfrguhst54plydyywwwrdcyocxopa1 # Public Key, get it from dashboard. See: https://www.tidio.com/panel/settings/developer
 
 
@@ -949,7 +949,7 @@ live2d:
     superSample: 2
     width: 150
     height: 300
-    position: right
+    position: left
     hOffset: 0
     vOffset: -20
   mobile:
@@ -962,13 +962,3 @@ live2d:
 # Fireworks
 fireworks: true
 
-canvas_nest:
-    enable: true
-    onmobile: true
-    colot: '0,0,255'
-    opacity: 0.5
-    zIndex: -1
-    count: 99
-    
-# three_waves
-three_waves: true //开启动画
