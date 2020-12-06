@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="1. 修改apt源1# cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.backup  1# vim &#x2F;etc&#x2F;apt&#x2F;sources.list">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DevStack(Stein版)安装说明">
+<meta property="og:url" content="http://example.com/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/index.html">
+<meta property="og:site_name" content="zhangml&#39;s Tech Blog">
+<meta property="og:description" content="1. 修改apt源1# cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.backup  1# vim &#x2F;etc&#x2F;apt&#x2F;sources.list">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-05T06:55:19.000Z">
+<meta property="article:modified_time" content="2020-12-06T07:01:29.751Z">
+<meta property="article:author" content="zhangml">
+<meta property="article:tag" content="OpenStack">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>DevStack(Stein版)安装说明 | zhangml's Tech Blog</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fcec3b37dd552fc3b6491514615e428";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+	
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">zhangml's Tech Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BF%AE%E6%94%B9apt%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">1. 修改apt源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEpip%E6%BA%90%E4%B8%8EPython"><span class="nav-number">2.</span> <span class="nav-text">2. 配置pip源与Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%87%86%E5%A4%87devstack%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">3. 准备devstack安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89clone-devstack%E4%BB%A3%E7%A0%81%EF%BC%88Stein%E7%89%88%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">（1）clone devstack代码（Stein版）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%88%9B%E5%BB%BAstack%E8%B4%A6%E6%88%B7"><span class="nav-number">3.2.</span> <span class="nav-text">（2）创建stack账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%A7%BB%E5%8A%A8%E4%BB%A3%E7%A0%81%EF%BC%88%E5%90%8C%E5%90%8E%E7%BB%AD%E5%AE%89%E8%A3%85%E7%9B%AE%E6%A0%87%E7%9B%AE%E5%BD%95%E6%94%BE%E5%9C%A8%E4%B8%80%E8%B5%B7%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">（3）移动代码（同后续安装目标目录放在一起）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%88%87%E6%8D%A2%E5%88%B0-stack-%E7%94%A8%E6%88%B7"><span class="nav-number">3.4.</span> <span class="nav-text">（4）切换到 stack 用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%AF%B9%E4%BA%8Estack%E8%B4%A6%E6%88%B7%E7%9A%84pip%EF%BC%8C%E5%86%8D%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%AD%A5%E9%AA%A42"><span class="nav-number">3.5.</span> <span class="nav-text">（5）对于stack账户的pip，再次执行步骤2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">4. 控制节点安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%AE%89%E8%A3%85%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%EF%BC%8C%E7%BC%96%E8%BE%91local-conf"><span class="nav-number">4.1.</span> <span class="nav-text">4. 1 安装控制节点，编辑local.conf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC"><span class="nav-number">4.2.</span> <span class="nav-text">4. 2 控制节点上，修改脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BF%AE%E6%94%B9tools-install-pip-sh"><span class="nav-number">4.2.1.</span> <span class="nav-text">（1）修改tools&#x2F;install_pip.sh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E4%BF%AE%E6%94%B9lib-apache"><span class="nav-number">4.2.2.</span> <span class="nav-text">（2）修改lib&#x2F;apache</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%BF%AE%E6%94%B9lib-tempest"><span class="nav-number">4.2.3.</span> <span class="nav-text">（3）修改lib&#x2F;tempest</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E6%89%A7%E8%A1%8Cdenstack%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="nav-number">4.3.</span> <span class="nav-text">4. 3 控制节点上，执行denstack安装脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4%E3%80%81%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E6%8A%A5%E9%94%99%E5%90%8E%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="nav-number">4.4.</span> <span class="nav-text">4. 4、控制节点上，报错后的一些操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%A6%82%E6%9E%9Cos-testr-1-0-0%E5%AE%89%E8%A3%85%E5%8D%A1%E4%BD%8F%EF%BC%8C%E5%88%99%E5%8F%AF%E4%BB%A5%E4%BA%BA%E5%B7%A5%E5%AE%89%E8%A3%85os-testr-2-0-0"><span class="nav-number">4.4.1.</span> <span class="nav-text">（1）如果os-testr&#x3D;&#x3D;&#x3D;1.0.0安装卡住，则可以人工安装os-testr&#x3D;&#x3D;&#x3D;2.0.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%882%EF%BC%89nova-py%E6%96%87%E4%BB%B6%E6%8A%A5%E9%94%99%EF%BC%8Cnovaclient-v2%E5%BA%93%E4%B8%AD%E6%B2%A1%E6%9C%89list-extensions%E5%87%BD%E6%95%B0%EF%BC%8C"><span class="nav-number">4.4.2.</span> <span class="nav-text">（2）nova.py文件报错，novaclient.v2库中没有list_extensions函数，</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%883%EF%BC%89oslo-privsep-daemon-FailedToDropPrivileges-privsep-helper-command-exited-non-zero"><span class="nav-number">4.4.3.</span> <span class="nav-text">（3）oslo_privsep.daemon.FailedToDropPrivileges: privsep helper command exited non-zero</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%A6%82%E6%9E%9Ccirros-0-4-0-x86-64-disk-img%E4%B8%8B%E8%BD%BD%E5%8D%A1%E4%BD%8F%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8B%E8%BD%BD%EF%BC%8C%E5%86%8D%E6%94%BE%E5%85%A5%E5%AF%B9%E5%BA%94%E7%9B%AE%E5%BD%95"><span class="nav-number">4.4.4.</span> <span class="nav-text">（4）如果cirros-0.4.0-x86_64-disk.img下载卡住，可以浏览器下载，再放入对应目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E8%8B%A5git%E6%9F%90%E4%B8%AA%E6%A8%A1%E5%9D%97%E5%8D%A1%E4%BD%8F%EF%BC%8C%E5%88%99%E5%8F%AF%E4%BB%A5%E6%89%8B%E5%B7%A5git-clone"><span class="nav-number">4.4.5.</span> <span class="nav-text">（5）若git某个模块卡住，则可以手工git clone</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85%E7%BB%93%E6%9D%9F%E5%90%8E%E7%9A%84%E8%BE%93%E5%87%BA"><span class="nav-number">4.5.</span> <span class="nav-text">4. 5 控制节点安装结束后的输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-6-%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85%E7%BB%93%E6%9D%9F%E5%90%8E%E7%99%BB%E5%BD%95OpenStack-web%E7%95%8C%E9%9D%A2%EF%BC%8C%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E5%9D%87%E4%B8%BA-admin"><span class="nav-number">4.6.</span> <span class="nav-text">4. 6 控制节点安装结束后登录OpenStack web界面，账号密码均为 admin</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">5. 计算节点安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-%E5%AE%89%E8%A3%85%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%EF%BC%8C%E7%BC%96%E8%BE%91local-conf"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 安装计算节点，编辑local.conf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2%E3%80%81%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%90%8C4-2"><span class="nav-number">5.2.</span> <span class="nav-text">5. 2、计算节点上，修改脚本，同4-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3%E3%80%81%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E6%89%A7%E8%A1%8Cdenstack%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="nav-number">5.3.</span> <span class="nav-text">5. 3、计算节点上，执行denstack安装脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4%E3%80%81%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E4%B8%8A%EF%BC%8C%E6%8A%A5%E9%94%99%E5%90%8E%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="nav-number">5.4.</span> <span class="nav-text">5. 4、计算节点上，报错后的一些操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-5%E3%80%81%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85%E7%BB%93%E6%9D%9F%E5%90%8E%E7%9A%84%E8%BE%93%E5%87%BA"><span class="nav-number">5.5.</span> <span class="nav-text">5. 5、计算节点安装结束后的输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-6%E3%80%81%E8%AE%A9%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E6%B3%A8%E5%86%8C%EF%BC%8C%E5%9C%A8%E6%8E%A7%E5%88%B6%E8%8A%82%E7%82%B9%E4%B8%8A%E8%BF%90%E8%A1%8C"><span class="nav-number">5.6.</span> <span class="nav-text">5. 6、让计算节点注册，在控制节点上运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-7%E3%80%81%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85%E7%BB%93%E6%9D%9F%E5%90%8E%E7%99%BB%E5%BD%95OpenStack-web%E7%95%8C%E9%9D%A2%EF%BC%8C%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E5%9D%87%E4%B8%BA-admin%E6%A0%BC%E5%BC%8F%E4%B8%BA"><span class="nav-number">5.7.</span> <span class="nav-text">5. 7、计算节点安装结束后登录OpenStack web界面，账号密码均为 admin格式为</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhangml"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">zhangml</p>
+  <div class="site-description" itemprop="description">Simply record what I have learned</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangml" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhangml" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zml2018@mail.ustc.edu.cn" title="E-Mail → zml2018@mail.ustc.edu.cn"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </section>
+      </div>
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=579954&auto=1&height=66"></iframe>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+  
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zhangml" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="zhangml">
+      <meta itemprop="description" content="Simply record what I have learned">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhangml's Tech Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DevStack(Stein版)安装说明
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-05 14:55:19" itemprop="dateCreated datePublished" datetime="2020-12-05T14:55:19+08:00">2020-12-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-12-06 15:01:29" itemprop="dateModified" datetime="2020-12-06T15:01:29+08:00">2020-12-06</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">云计算</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fab fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+	
+
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="1-修改apt源"><a href="#1-修改apt源" class="headerlink" title="1. 修改apt源"></a>1. 修改apt源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cp /etc/apt/sources.list /etc/apt/sources.list.backup</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get update</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> apt-get upgrade</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置pip源与Python"><a href="#2-配置pip源与Python" class="headerlink" title="2. 配置pip源与Python"></a>2. 配置pip源与Python</h3><p>（1）配置pip国内源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mkdir ~/.pip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim ~/.pip/pip.conf</span></span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">index-url = https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">extra-index-url = https://mirrors.163.com/pypi/simple/</span><br><span class="line"></span><br><span class="line">timeout = 60</span><br></pre></td></tr></table></figure>
+
+<p>（2）配置pip默认为pip3，Python默认为Python3</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip2 /usr/bin/pip2.7</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip3 /usr/bin/pip3.6</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rm -f /usr/bin/pip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip3 /usr/bin/pip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rm -f /usr/bin/python</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/python3 /usr/bin/python</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-准备devstack安装"><a href="#3-准备devstack安装" class="headerlink" title="3. 准备devstack安装"></a>3. 准备devstack安装</h3><h4 id="（1）clone-devstack代码（Stein版）"><a href="#（1）clone-devstack代码（Stein版）" class="headerlink" title="（1）clone devstack代码（Stein版）"></a>（1）clone devstack代码（Stein版）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> http://git.trystack.cn/openstack-dev/devstack -b stable/stein</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）创建stack账户"><a href="#（2）创建stack账户" class="headerlink" title="（2）创建stack账户"></a>（2）创建stack账户</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> devstack/tools/create-stack-user.sh</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）移动代码（同后续安装目标目录放在一起）"><a href="#（3）移动代码（同后续安装目标目录放在一起）" class="headerlink" title="（3）移动代码（同后续安装目标目录放在一起）"></a>（3）移动代码（同后续安装目标目录放在一起）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mv devstack /opt/stack</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> chown -R stack:stack /opt/stack/devstack</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="（4）切换到-stack-用户"><a href="#（4）切换到-stack-用户" class="headerlink" title="（4）切换到 stack 用户"></a>（4）切换到 stack 用户</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> su - stack</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> devstack</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="（5）对于stack账户的pip，再次执行步骤2"><a href="#（5）对于stack账户的pip，再次执行步骤2" class="headerlink" title="（5）对于stack账户的pip，再次执行步骤2"></a>（5）对于stack账户的pip，再次执行步骤2</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mkdir ~/.pip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim ~/.pip/pip.conf</span></span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">index-url = https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">extra-index-url = https://mirrors.163.com/pypi/simple/</span><br><span class="line"></span><br><span class="line">timeout = 60</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-控制节点安装"><a href="#4-控制节点安装" class="headerlink" title="4. 控制节点安装"></a>4. 控制节点安装</h3><h4 id="4-1-安装控制节点，编辑local-conf"><a href="#4-1-安装控制节点，编辑local-conf" class="headerlink" title="4. 1 安装控制节点，编辑local.conf"></a>4. 1 安装控制节点，编辑local.conf</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stack@controller:~/devstack$ vim local.conf</span><br></pre></td></tr></table></figure>
+
+<p>控制节点（ip与网卡名根据实际设置）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">[[local|localrc]]</span><br><span class="line"><span class="meta">#</span><span class="bash">---------------common section even some node role may not use this setting</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> use TryStack git mirror</span></span><br><span class="line"></span><br><span class="line">GIT_BASE=http://git.trystack.cn</span><br><span class="line">NOVNC_REPO=http://git.trystack.cn/kanaka/noVNC.git</span><br><span class="line">SPICE_REPO=http://git.trystack.cn/git/spice/spice-html5.git</span><br><span class="line"><span class="meta">#</span><span class="bash">LIBVIRT_TYPE=kvm</span></span><br><span class="line"></span><br><span class="line">DEST=/opt/stack</span><br><span class="line">LOGFILE=$DEST/logs/stack.sh.log</span><br><span class="line">VERBOSE=True</span><br><span class="line">LOGDAYS=1</span><br><span class="line">LOG_COLOR=True</span><br><span class="line">RECLONE=false</span><br><span class="line">PIP_UPGRADE=Flase</span><br><span class="line">DOWNLOAD_DEFAULT_IMAGES=False</span><br><span class="line">IMAGE_URLS=&quot;http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img&quot;</span><br><span class="line">IP_VERSION=4</span><br><span class="line">SERVICE_IP_VERSION=4</span><br><span class="line">ENABLE_IDENTITY_V2=False</span><br><span class="line"></span><br><span class="line">DATABASE_TYPE=mysql</span><br><span class="line"></span><br><span class="line">SERVICE_HOST=控制节点的ip地址</span><br><span class="line">MYSQL_HOST=$SERVICE_HOST</span><br><span class="line">RABBIT_HOST=$SERVICE_HOST</span><br><span class="line">GLANCE_HOSTPORT=$SERVICE_HOST:9292</span><br><span class="line">ADMIN_PASSWORD=admin</span><br><span class="line">MYSQL_PASSWORD=admin</span><br><span class="line">RABBIT_PASSWORD=admin</span><br><span class="line">SERVICE_PASSWORD=admin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Neutron options</span></span><br><span class="line"></span><br><span class="line">NEUTRON_CREATE_INITIAL_NETWORKS=False</span><br><span class="line"></span><br><span class="line">MULTI_HOST=1</span><br><span class="line"></span><br><span class="line">USE_PYTHON3=True</span><br><span class="line"></span><br><span class="line">enable_service placement-api </span><br><span class="line">enable_service placement-client</span><br><span class="line">disable_service etcd3 </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">---------------node special section</span></span><br><span class="line">HOST_IP=控制节点的ip地址</span><br><span class="line">FLAT_INTERFACE=enp5s0（网卡名）</span><br><span class="line"><span class="meta">#</span><span class="bash">RECLONE=True</span></span><br><span class="line"><span class="meta">#</span><span class="bash">enable_plugin octavia https://opendev.org/openstack/octavia stable/stein</span></span><br><span class="line"><span class="meta">#</span><span class="bash">enable_plugin octavia http://git.trystack.cn/openstack/octavia stable/stein</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">disable_service n-cpu q-agt n-api-meta c-vol n-net</span></span><br><span class="line">disable_service n-cpu c-vol</span><br><span class="line">enable_service q-fwaas,q-vpn</span><br><span class="line">enable_service q-lbaasv2,octavia,o-cw,o-hk,o-hm,o-api</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-2-控制节点上，修改脚本"><a href="#4-2-控制节点上，修改脚本" class="headerlink" title="4. 2 控制节点上，修改脚本"></a>4. 2 控制节点上，修改脚本</h4><h5 id="（1）修改tools-install-pip-sh"><a href="#（1）修改tools-install-pip-sh" class="headerlink" title="（1）修改tools/install_pip.sh"></a>（1）修改tools/install_pip.sh</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /opt/stack/devstack/tools/install_pip.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>注释掉135-140行</p>
+<h5 id="（2）修改lib-apache"><a href="#（2）修改lib-apache" class="headerlink" title="（2）修改lib/apache"></a>（2）修改lib/apache</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /opt/stack/devstack/lib/apache</span></span><br></pre></td></tr></table></figure>
+
+<p>第98行改为  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uwsgi=$(ls uWSGI*)</span><br></pre></td></tr></table></figure>
+
+<p>第99行改为   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mkdir uwsgi &amp; tar xvf <span class="variable">$uwsgi</span> -C uwsgi</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="（3）修改lib-tempest"><a href="#（3）修改lib-tempest" class="headerlink" title="（3）修改lib/tempest"></a>（3）修改lib/tempest</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /opt/stack/devstack/lib/tempest</span></span><br></pre></td></tr></table></figure>
+
+<p>第110行改为python3的写法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $size | python -c &quot;import math; print(int(math.ceil(float(int(input()) / 1024.0 ** 3))))&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-3-控制节点上，执行denstack安装脚本"><a href="#4-3-控制节点上，执行denstack安装脚本" class="headerlink" title="4. 3 控制节点上，执行denstack安装脚本"></a>4. 3 控制节点上，执行denstack安装脚本</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># FORCE&#x3D;yes .&#x2F;stack.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-4、控制节点上，报错后的一些操作"><a href="#4-4、控制节点上，报错后的一些操作" class="headerlink" title="4. 4、控制节点上，报错后的一些操作"></a>4. 4、控制节点上，报错后的一些操作</h4><p>   每次报错后都要先执行 ./unstack.sh<br>   再执行步骤4-3</p>
+<h5 id="（1）如果os-testr-1-0-0安装卡住，则可以人工安装os-testr-2-0-0"><a href="#（1）如果os-testr-1-0-0安装卡住，则可以人工安装os-testr-2-0-0" class="headerlink" title="（1）如果os-testr===1.0.0安装卡住，则可以人工安装os-testr===2.0.0"></a>（1）如果os-testr===1.0.0安装卡住，则可以人工安装os-testr===2.0.0</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#pip install os-testr&#x3D;&#x3D;2.0.0</span><br></pre></td></tr></table></figure>
+
+<p>若无法解决，就直接改upper-constraints.txt文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim &#x2F;opt&#x2F;stack&#x2F;requirements&#x2F;upper-constraints.txt</span><br></pre></td></tr></table></figure>
+
+<p>第438行改为   os-testr===2.0.0</p>
+<h5 id="（2）nova-py文件报错，novaclient-v2库中没有list-extensions函数，"><a href="#（2）nova-py文件报错，novaclient-v2库中没有list-extensions函数，" class="headerlink" title="（2）nova.py文件报错，novaclient.v2库中没有list_extensions函数，"></a>（2）nova.py文件报错，novaclient.v2库中没有list_extensions函数，</h5><p>修改horizon/openstack_dashboard/api/nova.py</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> rm /opt/stack/horizon/openstack_dashboard/api/nova.py</span></span><br></pre></td></tr></table></figure>
+
+<p>将上述nova.py文件替换为下面网址里的文件<br><a target="_blank" rel="noopener" href="https://opendev.org/openstack/horizon/src/commit/b148c9207580731863e4dc49771e132a8c31edbc/openstack_dashboard/api/nova.py">https://opendev.org/openstack/horizon/src/commit/b148c9207580731863e4dc49771e132a8c31edbc/openstack_dashboard/api/nova.py</a><br>也可以用wget直接下载，下载链接如下：<br><a target="_blank" rel="noopener" href="https://opendev.org/openstack/horizon/raw/commit/b148c9207580731863e4dc49771e132a8c31edbc/openstack_dashboard/api/nova.py">https://opendev.org/openstack/horizon/raw/commit/b148c9207580731863e4dc49771e132a8c31edbc/openstack_dashboard/api/nova.py</a></p>
+<h5 id="（3）oslo-privsep-daemon-FailedToDropPrivileges-privsep-helper-command-exited-non-zero"><a href="#（3）oslo-privsep-daemon-FailedToDropPrivileges-privsep-helper-command-exited-non-zero" class="headerlink" title="（3）oslo_privsep.daemon.FailedToDropPrivileges: privsep helper command exited non-zero"></a>（3）oslo_privsep.daemon.FailedToDropPrivileges: privsep helper command exited non-zero</h5><p>修改/usr/local/bin/privsep-helper</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim &#x2F;usr&#x2F;local&#x2F;bin&#x2F;privsep-helper</span><br></pre></td></tr></table></figure>
+
+<p>sys.exit(helper_main())   改为 sys.exit(0)</p>
+<h5 id="（4）如果cirros-0-4-0-x86-64-disk-img下载卡住，可以浏览器下载，再放入对应目录"><a href="#（4）如果cirros-0-4-0-x86-64-disk-img下载卡住，可以浏览器下载，再放入对应目录" class="headerlink" title="（4）如果cirros-0.4.0-x86_64-disk.img下载卡住，可以浏览器下载，再放入对应目录"></a>（4）如果cirros-0.4.0-x86_64-disk.img下载卡住，可以浏览器下载，再放入对应目录</h5><p>下载链接复制到浏览器   <a target="_blank" rel="noopener" href="http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img">http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img</a><br>把下载好的镜像文件传到服务器，再放入对应目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mv cirros-0.4.0-x86_64-disk.img &#x2F;opt&#x2F;stack&#x2F;devstack&#x2F;files&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h5 id="（5）若git某个模块卡住，则可以手工git-clone"><a href="#（5）若git某个模块卡住，则可以手工git-clone" class="headerlink" title="（5）若git某个模块卡住，则可以手工git clone"></a>（5）若git某个模块卡住，则可以手工git clone</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone http:&#x2F;&#x2F;git.trystack.cn&#x2F;openstack&#x2F;neutron &#x2F;opt&#x2F;stack&#x2F;neutron -b stable&#x2F;stein</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-5-控制节点安装结束后的输出"><a href="#4-5-控制节点安装结束后的输出" class="headerlink" title="4. 5 控制节点安装结束后的输出"></a>4. 5 控制节点安装结束后的输出</h4><p>执行 # ./run_tests.sh 进行各项服务的测试</p>
+<p>执行 # openstack user list ，若出现 Missing value auth-url required for auth plugin password<br>则执行 # source openrc admin admin</p>
+<h4 id="4-6-控制节点安装结束后登录OpenStack-web界面，账号密码均为-admin"><a href="#4-6-控制节点安装结束后登录OpenStack-web界面，账号密码均为-admin" class="headerlink" title="4. 6 控制节点安装结束后登录OpenStack web界面，账号密码均为 admin"></a>4. 6 控制节点安装结束后登录OpenStack web界面，账号密码均为 admin</h4><p>   <a target="_blank" rel="noopener" href="http://172.16.62.229/dashboard/auth/login/">http://172.16.62.229/dashboard/auth/login/</a></p>
+<p>若侧边栏：管理员/计算/实例 报错，则检查nova日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># journalctl -f --unit devstack@n-api.service</span><br></pre></td></tr></table></figure>
+
+<p>报错：oslo.messaging._drivers.impl_rabbit [-] AMQP server on 172.16.62.229 is unreachable: [Errno 104] Connection reset by peer.<br>rabbitmq添加用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> rabbitmqctl add_user admin admin</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rabbitmqctl set_permissions -p / admin <span class="string">&quot;.&quot;</span> <span class="string">&quot;.&quot;</span> <span class="string">&quot;.*&quot;</span> ;</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> rabbitmqctl set_user_tags admin administrator;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> service rabbitmq-server restart</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rabbitmqctl list_users</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-计算节点安装"><a href="#5-计算节点安装" class="headerlink" title="5. 计算节点安装"></a>5. 计算节点安装</h3><h4 id="5-1-安装计算节点，编辑local-conf"><a href="#5-1-安装计算节点，编辑local-conf" class="headerlink" title="5.1 安装计算节点，编辑local.conf"></a>5.1 安装计算节点，编辑local.conf</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> stack@computer1:~/devstack$ vim local.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>计算节点（ip与网卡名根据实际设置）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[[local|localrc]]</span><br><span class="line"><span class="meta">#</span><span class="bash">---------------common section even some node role may not use this setting</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> use TryStack git mirror</span></span><br><span class="line"></span><br><span class="line">GIT_BASE=http://git.trystack.cn</span><br><span class="line">NOVNC_REPO=http://git.trystack.cn/kanaka/noVNC.git</span><br><span class="line">SPICE_REPO=http://git.trystack.cn/git/spice/spice-html5.git</span><br><span class="line"><span class="meta">#</span><span class="bash">LIBVIRT_TYPE=kvm</span>	</span><br><span class="line"></span><br><span class="line">DEST=/opt/stack</span><br><span class="line">LOGFILE=$DEST/logs/stack.sh.log</span><br><span class="line">VERBOSE=True</span><br><span class="line">LOGDAYS=1</span><br><span class="line">LOG_COLOR=True</span><br><span class="line">RECLONE=false</span><br><span class="line">PIP_UPGRADE=Flase</span><br><span class="line">DOWNLOAD_DEFAULT_IMAGES=False</span><br><span class="line">IMAGE_URLS=&quot;http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img&quot;</span><br><span class="line">IP_VERSION=4</span><br><span class="line">SERVICE_IP_VERSION=4</span><br><span class="line">ENABLE_IDENTITY_V2=False</span><br><span class="line"></span><br><span class="line">DATABASE_TYPE=mysql</span><br><span class="line"></span><br><span class="line">SERVICE_HOST=控制结点的ip地址</span><br><span class="line">MYSQL_HOST=$SERVICE_HOST</span><br><span class="line">RABBIT_HOST=$SERVICE_HOST</span><br><span class="line">GLANCE_HOSTPORT=$SERVICE_HOST:9292</span><br><span class="line">ADMIN_PASSWORD=admin</span><br><span class="line">MYSQL_PASSWORD=admin</span><br><span class="line">RABBIT_PASSWORD=admin</span><br><span class="line">SERVICE_PASSWORD=admin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Neutron options</span></span><br><span class="line"></span><br><span class="line">NEUTRON_CREATE_INITIAL_NETWORKS=False</span><br><span class="line"></span><br><span class="line">MULTI_HOST=1</span><br><span class="line"></span><br><span class="line">USE_PYTHON3=True</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">---------------compute node common section</span></span><br><span class="line">ENABLED_SERVICES=n-cpu,q-agt,n-api-meta,placement-client,n-novnc</span><br><span class="line"></span><br><span class="line">NOVA_VNC_ENABLED=True</span><br><span class="line">NOVNCPROXY_URL=&quot;http://$SERVICE_HOST:6080/vnc_auto.html&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">---------------compute node special section</span></span><br><span class="line">HOST_IP=计算结点ip地址</span><br><span class="line">FLAT_INTERFACE=enp5s0（本机网卡名）</span><br><span class="line">VNCSERVER_PROXYCLIENT_ADDRESS=$HOST_IP</span><br><span class="line">VNCSERVER_LISTEN=$HOST_IP</span><br><span class="line"><span class="meta">#</span><span class="bash">ENABLED_SERVICES+=,c-vol</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-2、计算节点上，修改脚本，同4-2"><a href="#5-2、计算节点上，修改脚本，同4-2" class="headerlink" title="5. 2、计算节点上，修改脚本，同4-2"></a>5. 2、计算节点上，修改脚本，同4-2</h4><h4 id="5-3、计算节点上，执行denstack安装脚本"><a href="#5-3、计算节点上，执行denstack安装脚本" class="headerlink" title="5. 3、计算节点上，执行denstack安装脚本"></a>5. 3、计算节点上，执行denstack安装脚本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> FORCE=yes ./stack.sh</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-4、计算节点上，报错后的一些操作"><a href="#5-4、计算节点上，报错后的一些操作" class="headerlink" title="5. 4、计算节点上，报错后的一些操作"></a>5. 4、计算节点上，报错后的一些操作</h4><p>   每次报错后都要先执行 ./unstack.sh<br>   再执行步骤5-3<br>   具体操作同4-4，一般只会遇到4-4-(1)、(3)的报错，git clone和安装时的网络环境有关</p>
+<h4 id="5-5、计算节点安装结束后的输出"><a href="#5-5、计算节点安装结束后的输出" class="headerlink" title="5. 5、计算节点安装结束后的输出"></a>5. 5、计算节点安装结束后的输出</h4><p>执行 # ./run_tests.sh 进行各项服务的测试</p>
+<p>执行 # openstack user list ，若出现 Missing value auth-url required for auth plugin password<br>则执行 # source openrc admin admin</p>
+<h4 id="5-6、让计算节点注册，在控制节点上运行"><a href="#5-6、让计算节点注册，在控制节点上运行" class="headerlink" title="5. 6、让计算节点注册，在控制节点上运行"></a>5. 6、让计算节点注册，在控制节点上运行</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stack@controller:~/devstack$ /opt/stack/devstack/tools/discover_hosts.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-7、计算节点安装结束后登录OpenStack-web界面，账号密码均为-admin格式为"><a href="#5-7、计算节点安装结束后登录OpenStack-web界面，账号密码均为-admin格式为" class="headerlink" title="5. 7、计算节点安装结束后登录OpenStack web界面，账号密码均为 admin格式为"></a>5. 7、计算节点安装结束后登录OpenStack web界面，账号密码均为 admin格式为</h4><p>http://控制结点ip地址/dashboard/auth/login/</p>
+<p>例如：<a target="_blank" rel="noopener" href="http://172.16.62.229/dashboard/auth/login/">http://172.16.62.229/dashboard/auth/login/</a></p>
+<p>侧边栏：管理员/计算/虚拟机管理器，可以看到新增的计算节点<br>http://控制结点ip地址/dashboard/admin/hypervisors/</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>zhangml
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" title="DevStack(Stein版)安装说明">http://example.com/2020/12/05/2020-12-5-DevStack-Stein版-安装说明/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+		
+		<div>
+		  
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+		  
+		</div>
+          <div class="post-tags">
+              <a href="/tags/OpenStack/" rel="tag"><i class="fa fa-tag"></i> OpenStack</a>
+          </div>
+			
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/05/2018-12-5-Ubuntu18-04%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="prev" title="Ubuntu18.04基础环境配置">
+                  <i class="fa fa-chevron-left"></i> Ubuntu18.04基础环境配置
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/06/2020-12-6-OVS-Tunnel-Options/" rel="next" title="OVS Tunnel Options">
+                  OVS Tunnel Options <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangml</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fab fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fab fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: ''
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
