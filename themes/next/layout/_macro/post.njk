@@ -57,6 +57,8 @@
     {#################}
     {### POST BODY ###}
     {#################}
+	
+
     <div class="post-body{%- if post.direction and post.direction.toLowerCase() === 'rtl' %} rtl{%- endif %}" itemprop="articleBody">
       {%- if is_index %}
         {%- if post.description and theme.excerpt_description %}
@@ -92,6 +94,7 @@
     {#####################}
     {### END POST BODY ###}
     {#####################}
+	
 
     {%- if theme.related_posts.enable and (theme.related_posts.display_in_home or not is_index) %}
       {{ partial('_partials/post/post-related.njk') }}
@@ -114,6 +117,12 @@
         {%- if theme.follow_me %}
           {{ partial('_partials/post/post-followme.njk', {}, {cache: theme.cache.enable}) }}
         {%- endif %}
+		
+		<div>
+		  {% if not is_index %}
+			{% include 'passage-end-tag.njk' %}
+		  {% endif %}
+		</div>
 
         {%- if post.tags and post.tags.length %}
           {%- set tag_indicate = '<i class="fa fa-tag"></i>' if theme.tag_icon else '#' %}
@@ -123,7 +132,7 @@
             {%- endfor %}
           </div>
         {%- endif %}
-
+			
         {{ partial('_partials/post/post-footer.njk', {}, {cache: theme.cache.enable}) }}
 
         {%- if theme.post_navigation and (post.prev or post.next) %}
@@ -146,7 +155,6 @@
             </div>
           </div>
         {%- endif %}
-
       {%- endif %}
     </footer>
   </article>
