@@ -25,30 +25,33 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"zhangml.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="分享技术，记录人生">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhangml&#39;s Tech Blog">
-<meta property="og:url" content="http://zhangml.github.io/index.html">
+<meta name="description" content="GDBGDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GDB调试段错误">
+<meta property="og:url" content="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/index.html">
 <meta property="og:site_name" content="zhangml&#39;s Tech Blog">
-<meta property="og:description" content="分享技术，记录人生">
+<meta property="og:description" content="GDBGDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-08T12:03:24.000Z">
+<meta property="article:modified_time" content="2020-12-08T11:52:20.421Z">
 <meta property="article:author" content="zhangml">
+<meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://zhangml.github.io/">
+<link rel="canonical" href="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
-<title>zhangml's Tech Blog</title>
+<title>GDB调试段错误 | zhangml's Tech Blog</title>
   
 
   <script>
@@ -183,7 +186,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -196,6 +199,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#GDB"><span class="nav-number">1.</span> <span class="nav-text">GDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">段错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -268,9 +272,10 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
@@ -290,9 +295,9 @@
       <meta itemprop="name" content="zhangml's Tech Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/" class="post-title-link" itemprop="url">GDB调试段错误</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          GDB调试段错误
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -307,6 +312,13 @@
     </span>
 
   
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fab fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
 </div>
 
         </div>
@@ -318,381 +330,112 @@
 	
 
     <div class="post-body" itemprop="articleBody">
-          <h4 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h4><p>GDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程序。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
+        <h4 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h4><p>GDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程序。</p>
+<a id="more"></a>
 
-    
-    
-    
+<p>总的来说，借助 GDB 调试器可以实现以下几个功能：</p>
+<ol>
+<li>程序启动时，可以按照我们自定义的要求运行程序，例如设置参数和环境变量；</li>
+<li>可使被调试程序在指定代码处暂停运行，并查看当前程序的运行状态（例如当前变量的值，函数的执行结果等），即支持断点调试；</li>
+<li>程序执行过程中，可以改变某个变量的值，还可以改变代码的执行顺序，从而尝试修改程序中出现的逻辑错误。</li>
+</ol>
+<p>判断当前 Linux 发行版是否安装有 GDB 的方法也很简单，就是在命令行窗口中执行 gdb -v 命令。如果显示以下信息，则说明该系统以及安装了GDB。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# gdb -v</span><br><span class="line">GNU gdb (GDB) Red Hat Enterprise Linux (7.2-92.el6)</span><br><span class="line">Copyright (C) 2010 Free Software Foundation, Inc.</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
 
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="zhangml">
-      <meta itemprop="description" content="分享技术，记录人生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhangml's Tech Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">git rebase 命令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-12-07 20:03:24 / 修改时间：20:04:45" itemprop="dateCreated datePublished" datetime="2020-12-07T20:03:24+08:00">2020-12-07</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-	
-
-    <div class="post-body" itemprop="articleBody">
-          <p>在项目的协同开发过程中，可能会产生很多的commit记录，使用git rebase能够将分叉的分支重新合并，使项目中的提交历史变得干净整洁。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/12/06/2020-12-6-OVS-Tunnel-Options/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="zhangml">
-      <meta itemprop="description" content="分享技术，记录人生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhangml's Tech Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/06/2020-12-6-OVS-Tunnel-Options/" class="post-title-link" itemprop="url">OVS Tunnel Options</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-06 16:08:13" itemprop="dateCreated datePublished" datetime="2020-12-06T16:08:13+08:00">2020-12-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-12-07 20:55:34" itemprop="dateModified" datetime="2020-12-07T20:55:34+08:00">2020-12-07</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/OVS/" itemprop="url" rel="index"><span itemprop="name">OVS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-	
-
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><p><strong>options: remote_ip</strong></p>
-<p>String类型，远程隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即remote_ip=flow则flow这个动作(set_field)必须指定tun_dst或tun_ipv6_dst为远程隧道端口的IP。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/8123.html">http://c.biancheng.net/view/8123.html</a></p>
+<h4 id="段错误"><a href="#段错误" class="headerlink" title="段错误"></a>段错误</h4><p>一旦一个程序发生了越界访问，CPU就会产生相应的保护，于是segmentation fault就出现了。通俗来讲，段错误应该就是访问了不可访问的内存，这个内存区要么是不存在的，要么是受到系统保护的，还有可能是缺少文件或者文件损坏。</p>
+<p>在编程中以下几类做法容易导致段错误,基本上是错误地使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%8C%87%E9%92%88">指针</a>引起的。</p>
+<ol>
+<li><p>访问系统数据区，尤其是往系统保护的内存地址写数据最常见就是给一个指针以0地址。</p>
 </li>
-<li><p><strong>options: local_ip</strong></p>
-<p>String类型，本地隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即local_ip=flow则flow这个动作(set_field)必须指定tun_src或者tun_ipv6_src为本地隧道端口的IP。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/06/2020-12-6-OVS-Tunnel-Options/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="zhangml">
-      <meta itemprop="description" content="分享技术，记录人生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhangml's Tech Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">DevStack(Stein版)安装说明</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-05 14:55:19" itemprop="dateCreated datePublished" datetime="2020-12-05T14:55:19+08:00">2020-12-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-12-06 15:01:29" itemprop="dateModified" datetime="2020-12-06T15:01:29+08:00">2020-12-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">云计算</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-	
-
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="1-修改apt源"><a href="#1-修改apt源" class="headerlink" title="1. 修改apt源"></a>1. 修改apt源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cp /etc/apt/sources.list /etc/apt/sources.list.backup</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/12/05/2020-12-5-Ubuntu18-04%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="zhangml">
-      <meta itemprop="description" content="分享技术，记录人生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhangml's Tech Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/05/2020-12-5-Ubuntu18-04%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Ubuntu18.04基础环境配置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-05 14:04:02" itemprop="dateCreated datePublished" datetime="2020-12-05T14:04:02+08:00">2020-12-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-12-06 14:59:41" itemprop="dateModified" datetime="2020-12-06T14:59:41+08:00">2020-12-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-	
-
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="1-设置静态ip与DNS"><a href="#1-设置静态ip与DNS" class="headerlink" title="1. 设置静态ip与DNS"></a>1. 设置静态ip与DNS</h3><ul>
-<li><p>修改/etc/network/interfaces设置静态ip</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/network/interfaces</span></span><br></pre></td></tr></table></figure>
-
+<li><p>内存越界(数组越界，变量类型不一致等)： 访问到不属于你的内存区域。</p>
 </li>
+</ol>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>在我们的案例中，程序通过make编译了一个可执行文件tests。</p>
+<p>运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gdb ./<span class="built_in">test</span></span></span><br></pre></td></tr></table></figure>
+
+<p>得到如下显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GNU gdb (Ubuntu 8.1-0ubuntu3) 8.1.0.20180409-git</span><br><span class="line">Copyright (C) 2018 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http:&#x2F;&#x2F;gnu.org&#x2F;licenses&#x2F;gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;</span><br><span class="line">and &quot;show warranty&quot; for details.</span><br><span class="line">This GDB was configured as &quot;x86_64-linux-gnu&quot;.</span><br><span class="line">Type &quot;show configuration&quot; for configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;http:&#x2F;&#x2F;www.gnu.org&#x2F;software&#x2F;gdb&#x2F;bugs&#x2F;&gt;.</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br></pre></td></tr></table></figure>
+
+<p>输入crtl，继续输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) r</span><br></pre></td></tr></table></figure>
+
+<p>程序会继续执行，直到发生段错误，无需打断点，并错误信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Thread 1 &quot;tests&quot; received signal SIGSEGV, Segmentation fault.</span><br><span class="line">0x00007ffff6216cf1 in __GI___libc_free (mem=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span><br><span class="line">3133    malloc.c: No such file or directory.</span><br></pre></td></tr></table></figure>
+
+<p>从以上信息可以看到，发生段错误的位置大概在aca_oam_server::ACA_Oam_Server::_parse_oam_none这个方法。</p>
+<p>我们继续输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) backtrace</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">0  0x00007ffff6216cf1 <span class="keyword">in</span> __GI___libc_free (mem=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1  0x00005555557a419a <span class="keyword">in</span> __gnu_cxx::new_allocator&lt;std::__detail::_Hash_node_base*&gt;::deallocate (this=0x7fffffffe2df,</span> </span><br><span class="line">    __p=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at /usr/include/c++/7/ext/new_allocator.h:125</span><br><span class="line"><span class="meta">#</span><span class="bash">2  0x00005555557a1bcc <span class="keyword">in</span> std::allocator_traits&lt;std::allocator&lt;std::__detail::_Hash_node_base*&gt; &gt;::deallocate (__a=...,</span> </span><br><span class="line">    __p=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;, __n=0) at /usr/include/c++/7/bits/alloc_traits.h:462</span><br><span class="line"><span class="meta">#</span><span class="bash">3  0x00005555557bea0b <span class="keyword">in</span> std::__detail::_Hashtable_alloc&lt;std::allocator&lt;std::__detail::_Hash_node&lt;unsigned int, <span class="literal">false</span>&gt; &gt; &gt;::_M_deallocate_buckets (</span></span><br><span class="line">    this=0x555555ba9c50 &lt;aca_oam_server::ACA_Oam_Server::get_instance()::instance+48&gt;, __bkts=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;, __n=0)</span><br><span class="line">    at /usr/include/c++/7/bits/hashtable_policy.h:2121</span><br><span class="line"><span class="meta">#</span><span class="bash">4  0x00005555557be636 <span class="keyword">in</span> std::_Hashtable&lt;unsigned int, unsigned int, std::allocator&lt;unsigned int&gt;, std::__detail::_Identity, std::equal_to&lt;unsigned int&gt;, std::<span class="built_in">hash</span>&lt;unsigned int&gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">true</span>&gt; &gt;::_M_deallocate_buckets (</span></span><br></pre></td></tr></table></figure>
+
+<p>通过运行 (gdb) frame 序号可以查看更具体的信息</p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) frame 0</span><br><span class="line">#0  0x00007ffff6216cf1 in __GI___libc_free (mem&#x3D;0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span><br><span class="line">3133    in malloc.c</span><br></pre></td></tr></table></figure>
+
+<p>我们检查代码，发现声明了一个函数数组</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (aca_oam_server::ACA_Oam_Server ::*_parse_oam_msg_ops[<span class="number">3</span>])(<span class="keyword">uint32_t</span> udp_dpost,oam_message *oammsg);</span><br></pre></td></tr></table></figure>
+
+<p>但在赋值时发生了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_parse_oam_msg_ops[<span class="number">3</span>] = &amp;aca_oam_server::ACA_Oam_Server::_parse_oam_none;</span><br></pre></td></tr></table></figure>
+
+<p>数组下标越界，导致发生了段错误。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>zhangml
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/" title="GDB调试段错误">http://zhangml.github.io/2020/12/08/2020-12-08-GDB调试段错误/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/05/2020-12-5-Ubuntu18-04%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+</div>
+
+		
+		<div>
+		  
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+		  
+		</div>
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"><i class="fa fa-tag"></i> c++</a>
+          </div>
+			
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/" rel="prev" title="git rebase 命令">
+                  <i class="fa fa-chevron-left"></i> git rebase 命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
+
 
 
 
