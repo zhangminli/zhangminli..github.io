@@ -41,7 +41,7 @@ categories: OVS
 
 - **Tunnel Options: vxlan only**
 
-  - **options: exts**—以逗号为分隔的vxlan扩展功能，目前支持的属性有：gbp，VXLAN-GBP允许传输一个包的组策略上下文在vxlan隧道中。具体详见[https://tools.ietf.org/html/draft%E2%88%92smith%E2%88%92vxlan%E2%88%92group%E2%88%92policy](https://tools.ietf.org/html/draft−smith−vxlan−group−policy)
+  - **options: exts**—以逗号为分隔的vxlan扩展功能，目前支持的属性有：gbp，VXLAN-GBP允许传输一个包的组策略上下文在vxlan隧道中。
 
 - **Tunnel Options: gre, ipsec_gre, geneve, vxlan**
 
