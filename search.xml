@@ -1,8 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Ubuntu18.04基础环境配置</title>
+    <url>/2020/7177/</url>
+    <content><![CDATA[<h3 id="1-设置静态ip与DNS"><a href="#1-设置静态ip与DNS" class="headerlink" title="1. 设置静态ip与DNS"></a>1. 设置静态ip与DNS</h3><ul>
+<li><p>修改/etc/network/interfaces设置静态ip</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/network/interfaces</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<a id="more"></a>
+
+<p>​       修改如下：</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> interfaces(5) file used by ifup(8) and ifdown(8)</span></span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto enp5s0             # 网卡的名称要根据实际设置，有可能是enp1s0</span><br><span class="line">iface enp5s0 inet static</span><br><span class="line">address 172.16.62.237     # 根据实际需要设置231-239</span><br><span class="line">netmask 255.255.255.0</span><br><span class="line">gateway 172.16.62.254</span><br></pre></td></tr></table></figure>
+<p>​        重启网络服务：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> service networking restart</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改/etc/systemd/resolved.conf设置NDS</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/systemd/resolved.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>​       修改如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[Resolve]</span><br><span class="line">DNS=114.114.114.114</span><br></pre></td></tr></table></figure>
+
+<p>​        重启DNS服务：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> service systemd-resolved restart</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>3 设置hosts与hostname，并重启</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/hosts</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/hostname</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> reboot</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-更换国内apt源，并更新软件"><a href="#2-更换国内apt源，并更新软件" class="headerlink" title="2. 更换国内apt源，并更新软件"></a>2. 更换国内apt源，并更新软件</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cp /etc/apt/sources.list /etc/apt/sources.list.backup</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> vi /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure>
+
+<p>​      阿里云源 <a href="https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11nkzu7o">https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11nkzu7o</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get update</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> apt-get upgrade</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3、安装基础软件"><a href="#3、安装基础软件" class="headerlink" title="3、安装基础软件"></a>3、安装基础软件</h4><ul>
+<li> vi不能正常使用上下左右方向键，卸载后重新安装vi/vim</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get remove vim-common</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y vim</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>安装ip、ifconfig、ping、traceroute</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y iproute2 net-tools iputils-ping traceroute</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装pip2、pip3，并更换国内源**</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y python-pip python3-pip</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> mkdir ~/.pip</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim ~/.pip/pip.conf</span></span><br><span class="line"></span><br><span class="line">[global]  index-url = https://pypi.tuna.tsinghua.edu.cn/simple  extra-index-url =  https://mirrors.163.com/pypi/simple/     timeout = 60  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip2 /usr/bin/pip2.7</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip3 /usr/bin/pip3.6</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> rm -f /usr/bin/pip</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/pip3 /usr/bin/pip</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> rm -f /usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/bin/python3 /usr/bin/python</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装文件上传下载工具lrzsz、同步工具rsync</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y lrzsz rsync</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装ssh-server，并配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y openssh-server</span></span><br></pre></td></tr></table></figure>
+
+<p>检查ssh-server是否启动：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ps -aux | grep sshd</span></span><br></pre></td></tr></table></figure>
+
+<p>若未出现sshd结果，则执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> service ssh start</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装发包工具、流量统计工具netperf、iperf、iftop、vnstat</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y netperf iperf iftop vnstat</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装docker</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> apt-get install -y docker.io</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>OVS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git rebase 命令</title>
-    <url>/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/</url>
+    <url>/2020/46552/</url>
     <content><![CDATA[<p>在项目的协同开发过程中，可能会产生很多的commit记录，使用git rebase能够将分叉的分支重新合并，使项目中的提交历史变得干净整洁。</p>
 <a id="more"></a>
 
@@ -34,7 +128,7 @@
   </entry>
   <entry>
     <title>GDB调试段错误</title>
-    <url>/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/</url>
+    <url>/2020/6330/</url>
     <content><![CDATA[<h4 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h4><p>GDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程序。</p>
 <a id="more"></a>
 
@@ -66,7 +160,7 @@
 <p>输入crtl，继续输入</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(gdb) r</span><br></pre></td></tr></table></figure>
 
-<p>程序会继续执行，直到发生段错误，无需打断点，并错误信息</p>
+<p>程序会继续执行，直到发生段错误，无需打断点，并显示类似如下错误信息</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Thread 1 &quot;tests&quot; received signal SIGSEGV, Segmentation fault.</span><br><span class="line">0x00007ffff6216cf1 in __GI___libc_free (mem=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span><br><span class="line">3133    malloc.c: No such file or directory.</span><br></pre></td></tr></table></figure>
 
 <p>从以上信息可以看到，发生段错误的位置大概在aca_oam_server::ACA_Oam_Server::_parse_oam_none这个方法。</p>
@@ -91,7 +185,7 @@
   </entry>
   <entry>
     <title>DevStack(Stein版)安装说明</title>
-    <url>/2020/12/05/2020-12-5-DevStack-Stein%E7%89%88-%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/</url>
+    <url>/2020/63670/</url>
     <content><![CDATA[<h3 id="1-修改apt源"><a href="#1-修改apt源" class="headerlink" title="1. 修改apt源"></a>1. 修改apt源</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cp /etc/apt/sources.list /etc/apt/sources.list.backup</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure>
@@ -201,7 +295,7 @@
   </entry>
   <entry>
     <title>Ubuntu18.04基础环境配置</title>
-    <url>/2020/12/05/2020-12-5-Ubuntu18-04%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    <url>/2020/7178/</url>
     <content><![CDATA[<h3 id="1-设置静态ip与DNS"><a href="#1-设置静态ip与DNS" class="headerlink" title="1. 设置静态ip与DNS"></a>1. 设置静态ip与DNS</h3><ul>
 <li><p>修改/etc/network/interfaces设置静态ip</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gedit /etc/network/interfaces</span></span><br></pre></td></tr></table></figure>
@@ -295,7 +389,7 @@
   </entry>
   <entry>
     <title>OVS Tunnel Options</title>
-    <url>/2020/12/06/2020-12-6-OVS-Tunnel-Options/</url>
+    <url>/2020/63049/</url>
     <content><![CDATA[<ul>
 <li><p><strong>options: remote_ip</strong></p>
 <p>String类型，远程隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即remote_ip=flow则flow这个动作(set_field)必须指定tun_dst或tun_ipv6_dst为远程隧道端口的IP。</p>

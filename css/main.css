@@ -2997,3 +2997,11 @@ mjx-container[display="true"] + br {
     padding: 10px 12px;
   }
 }
+.post-nav-item a {
+  color: #5073b8;
+  font-weight: bold;
+}
+.post-nav-item a:hover {
+  color: #a166ab;
+  font-weight: bold;
+}

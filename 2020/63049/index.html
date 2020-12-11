@@ -25,21 +25,21 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"zhangml.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="GDBGDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程">
+<meta name="description" content="options: remote_ip String类型，远程隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即remote_ip&#x3D;flow则flow这个动作(set_field)必须指定tun_dst或tun_ipv6_dst为远程隧道端口的IP。  options: local_ip String类型，本地隧道端口。必须是个单播地址ipv4或者ip">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GDB调试段错误">
-<meta property="og:url" content="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:title" content="OVS Tunnel Options">
+<meta property="og:url" content="http://zhangml.github.io/2020/63049/index.html">
 <meta property="og:site_name" content="zhangml&#39;s Tech Blog">
-<meta property="og:description" content="GDBGDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程">
+<meta property="og:description" content="options: remote_ip String类型，远程隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即remote_ip&#x3D;flow则flow这个动作(set_field)必须指定tun_dst或tun_ipv6_dst为远程隧道端口的IP。  options: local_ip String类型，本地隧道端口。必须是个单播地址ipv4或者ip">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-08T12:03:24.000Z">
-<meta property="article:modified_time" content="2020-12-08T11:52:20.421Z">
+<meta property="article:published_time" content="2020-12-06T08:08:13.000Z">
+<meta property="article:modified_time" content="2020-12-10T03:20:37.133Z">
 <meta property="article:author" content="zhangml">
-<meta property="article:tag" content="c++">
+<meta property="article:tag" content="OVS">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/">
+<link rel="canonical" href="http://zhangml.github.io/2020/63049/">
 
 
 <script class="page-configurations">
@@ -51,7 +51,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>GDB调试段错误 | zhangml's Tech Blog</title>
+<title>OVS Tunnel Options | zhangml's Tech Blog</title>
   
 
   <script>
@@ -143,6 +143,7 @@
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-music"><a href="/music/" rel="section"><i class="fa fa-music fa-fw"></i>music</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -186,7 +187,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -199,7 +200,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#GDB"><span class="nav-number">1.</span> <span class="nav-text">GDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">段错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -208,22 +208,20 @@
     <img class="site-author-image" itemprop="image" alt="zhangml"
       src="/images/author.jpg">
   <p class="site-author-name" itemprop="name">zhangml</p>
-  <div class="site-description" itemprop="description">分享技术，记录人生</div>
+  <div class="site-description" itemprop="description">Simply record what I have learned</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
         <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span></a>
+        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
@@ -283,12 +281,12 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/">
+    <link itemprop="mainEntityOfPage" href="http://zhangml.github.io/2020/63049/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
       <meta itemprop="name" content="zhangml">
-      <meta itemprop="description" content="分享技术，记录人生">
+      <meta itemprop="description" content="Simply record what I have learned">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -296,7 +294,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          GDB调试段错误
+          OVS Tunnel Options
         </h1>
 
         <div class="post-meta-container">
@@ -306,9 +304,24 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-12-08 20:03:24 / 修改时间：19:52:20" itemprop="dateCreated datePublished" datetime="2020-12-08T20:03:24+08:00">2020-12-08</time>
+      <time title="创建时间：2020-12-06 16:08:13" itemprop="dateCreated datePublished" datetime="2020-12-06T16:08:13+08:00">2020-12-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-12-10 11:20:37" itemprop="dateModified" datetime="2020-12-10T11:20:37+08:00">2020-12-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OVS/" itemprop="url" rel="index"><span itemprop="name">OVS</span></a>
+        </span>
     </span>
 
   
@@ -330,55 +343,43 @@
 	
 
     <div class="post-body" itemprop="articleBody">
-        <h4 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h4><p>GDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程序。</p>
+        <ul>
+<li><p><strong>options: remote_ip</strong></p>
+<p>String类型，远程隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即remote_ip=flow则flow这个动作(set_field)必须指定tun_dst或tun_ipv6_dst为远程隧道端口的IP。</p>
+</li>
+<li><p><strong>options: local_ip</strong></p>
+<p>String类型，本地隧道端口。必须是个单播地址ipv4或者ipv6，或者是一个关键词flow。如果设置成flow，即local_ip=flow则flow这个动作(set_field)必须指定tun_src或者tun_ipv6_src为本地隧道端口的IP。</p>
 <a id="more"></a>
-
-<p>总的来说，借助 GDB 调试器可以实现以下几个功能：</p>
-<ol>
-<li>程序启动时，可以按照我们自定义的要求运行程序，例如设置参数和环境变量；</li>
-<li>可使被调试程序在指定代码处暂停运行，并查看当前程序的运行状态（例如当前变量的值，函数的执行结果等），即支持断点调试；</li>
-<li>程序执行过程中，可以改变某个变量的值，还可以改变代码的执行顺序，从而尝试修改程序中出现的逻辑错误。</li>
-</ol>
-<p>判断当前 Linux 发行版是否安装有 GDB 的方法也很简单，就是在命令行窗口中执行 gdb -v 命令。如果显示以下信息，则说明该系统以及安装了GDB。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# gdb -v</span><br><span class="line">GNU gdb (GDB) Red Hat Enterprise Linux (7.2-92.el6)</span><br><span class="line">Copyright (C) 2010 Free Software Foundation, Inc.</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
-
-<p>参考链接：<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/8123.html">http://c.biancheng.net/view/8123.html</a></p>
-<h4 id="段错误"><a href="#段错误" class="headerlink" title="段错误"></a>段错误</h4><p>一旦一个程序发生了越界访问，CPU就会产生相应的保护，于是segmentation fault就出现了。通俗来讲，段错误应该就是访问了不可访问的内存，这个内存区要么是不存在的，要么是受到系统保护的，还有可能是缺少文件或者文件损坏。</p>
-<p>在编程中以下几类做法容易导致段错误,基本上是错误地使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%8C%87%E9%92%88">指针</a>引起的。</p>
-<ol>
-<li><p>访问系统数据区，尤其是往系统保护的内存地址写数据最常见就是给一个指针以0地址。</p>
 </li>
-<li><p>内存越界(数组越界，变量类型不一致等)： 访问到不属于你的内存区域。</p>
+<li><p><strong>options: in_key</strong></p>
+<p>String类型，隧道接收的包，包的key值含以下三者之一：0，包中如果没有key或者这个key是0，则表示没有这个属性；一个确定的24bit(Geneve，VXLAN，LISP)，32bit（GRE），64bit（STT）数字，隧道会接收以上指定key的包；关键字flow，隧道会接收任意key的包，key会被替换成tun_id，并使用tun_id去匹配流表。</p>
 </li>
-</ol>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>在我们的案例中，程序通过make编译了一个可执行文件tests。</p>
-<p>运行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gdb ./<span class="built_in">test</span></span></span><br></pre></td></tr></table></figure>
-
-<p>得到如下显示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GNU gdb (Ubuntu 8.1-0ubuntu3) 8.1.0.20180409-git</span><br><span class="line">Copyright (C) 2018 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http:&#x2F;&#x2F;gnu.org&#x2F;licenses&#x2F;gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;</span><br><span class="line">and &quot;show warranty&quot; for details.</span><br><span class="line">This GDB was configured as &quot;x86_64-linux-gnu&quot;.</span><br><span class="line">Type &quot;show configuration&quot; for configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;http:&#x2F;&#x2F;www.gnu.org&#x2F;software&#x2F;gdb&#x2F;bugs&#x2F;&gt;.</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br></pre></td></tr></table></figure>
-
-<p>输入crtl，继续输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) r</span><br></pre></td></tr></table></figure>
-
-<p>程序会继续执行，直到发生段错误，无需打断点，并错误信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Thread 1 &quot;tests&quot; received signal SIGSEGV, Segmentation fault.</span><br><span class="line">0x00007ffff6216cf1 in __GI___libc_free (mem=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span><br><span class="line">3133    malloc.c: No such file or directory.</span><br></pre></td></tr></table></figure>
-
-<p>从以上信息可以看到，发生段错误的位置大概在aca_oam_server::ACA_Oam_Server::_parse_oam_none这个方法。</p>
-<p>我们继续输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) backtrace</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">0  0x00007ffff6216cf1 <span class="keyword">in</span> __GI___libc_free (mem=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1  0x00005555557a419a <span class="keyword">in</span> __gnu_cxx::new_allocator&lt;std::__detail::_Hash_node_base*&gt;::deallocate (this=0x7fffffffe2df,</span> </span><br><span class="line">    __p=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at /usr/include/c++/7/ext/new_allocator.h:125</span><br><span class="line"><span class="meta">#</span><span class="bash">2  0x00005555557a1bcc <span class="keyword">in</span> std::allocator_traits&lt;std::allocator&lt;std::__detail::_Hash_node_base*&gt; &gt;::deallocate (__a=...,</span> </span><br><span class="line">    __p=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;, __n=0) at /usr/include/c++/7/bits/alloc_traits.h:462</span><br><span class="line"><span class="meta">#</span><span class="bash">3  0x00005555557bea0b <span class="keyword">in</span> std::__detail::_Hashtable_alloc&lt;std::allocator&lt;std::__detail::_Hash_node&lt;unsigned int, <span class="literal">false</span>&gt; &gt; &gt;::_M_deallocate_buckets (</span></span><br><span class="line">    this=0x555555ba9c50 &lt;aca_oam_server::ACA_Oam_Server::get_instance()::instance+48&gt;, __bkts=0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;, __n=0)</span><br><span class="line">    at /usr/include/c++/7/bits/hashtable_policy.h:2121</span><br><span class="line"><span class="meta">#</span><span class="bash">4  0x00005555557be636 <span class="keyword">in</span> std::_Hashtable&lt;unsigned int, unsigned int, std::allocator&lt;unsigned int&gt;, std::__detail::_Identity, std::equal_to&lt;unsigned int&gt;, std::<span class="built_in">hash</span>&lt;unsigned int&gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">true</span>&gt; &gt;::_M_deallocate_buckets (</span></span><br></pre></td></tr></table></figure>
-
-<p>通过运行 (gdb) frame 序号可以查看更具体的信息</p>
-<p>如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) frame 0</span><br><span class="line">#0  0x00007ffff6216cf1 in __GI___libc_free (mem&#x3D;0x5555557bd066 &lt;aca_oam_server::ACA_Oam_Server::_parse_oam_none(unsigned int, aca_oam_server::oam_message*)&gt;) at malloc.c:3133</span><br><span class="line">3133    in malloc.c</span><br></pre></td></tr></table></figure>
-
-<p>我们检查代码，发现声明了一个函数数组</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (aca_oam_server::ACA_Oam_Server ::*_parse_oam_msg_ops[<span class="number">3</span>])(<span class="keyword">uint32_t</span> udp_dpost,oam_message *oammsg);</span><br></pre></td></tr></table></figure>
-
-<p>但在赋值时发生了</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_parse_oam_msg_ops[<span class="number">3</span>] = &amp;aca_oam_server::ACA_Oam_Server::_parse_oam_none;</span><br></pre></td></tr></table></figure>
-
-<p>数组下标越界，导致发生了段错误。</p>
+<li><p><strong>options: out_key</strong></p>
+<p>String类型，隧道发送的包，包的key值被设置为：0，包如果被设置为0，则发送的包不会带有该属性，等同于不设置改属性；一个确定的24bit(Geneve，VXLAN，LISP)，32bit（GRE），64bit（STT）数字，隧道发送的包会带上该key；关键字flow，隧道会设置key值。</p>
+</li>
+<li><p><strong>options: key</strong></p>
+<p>String类型，如果in_key和out_key是同一数值，则可以合并为该属性。</p>
+</li>
+<li><p><strong>options: tos</strong></p>
+<p>String类型，在封包的时候添加进ToS字段。</p>
+</li>
+<li><p><strong>options: ttl</strong></p>
+<p>String类型，可以设置为inherit、数字、不设置，TTL字段会被设置在封装包中，该属性表示该包在路由前最大经过的网段数量。inherit表示从inner packet(必须要是ipv4或ipv6)中拷贝TTL字段，不设置则默认为64。</p>
+</li>
+<li><p><strong>options: df_default</strong></p>
+<p>布尔类型，如果为true表示不分包bit会被设置在封装包头中，去让MTU发现。</p>
+</li>
+<li><p><strong>Tunnel Options: vxlan only</strong></p>
+<ul>
+<li><strong>options: exts</strong>—以逗号为分隔的vxlan扩展功能，目前支持的属性有：gbp，VXLAN-GBP允许传输一个包的组策略上下文在vxlan隧道中。</li>
+</ul>
+</li>
+<li><p><strong>Tunnel Options: gre, ipsec_gre, geneve, vxlan</strong></p>
+<ul>
+<li><strong>options: csum</strong> — String类型，只可能是True、False。在发包中计算封包头的校验，GRE默认支持，vxlan和geneve则需要kernel &gt; 4.0</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -386,9 +387,19 @@
     
     
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\7177\" rel="bookmark">Ubuntu18.04基础环境配置</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\7178\" rel="bookmark">Ubuntu18.04基础环境配置</a></div>
+    </li>
+  </ul>
 
 
-    <footer class="post-footer">
+    <footer class="post-footer"><div style="text-align: center"><span id="jrsc" >正在加载今日诗词....</span></div>
+
           
 
 <div class="post-copyright">
@@ -398,7 +409,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://zhangml.github.io/2020/12/08/2020-12-08-GDB%E8%B0%83%E8%AF%95%E6%AE%B5%E9%94%99%E8%AF%AF/" title="GDB调试段错误">http://zhangml.github.io/2020/12/08/2020-12-08-GDB调试段错误/</a>
+      <a href="http://zhangml.github.io/2020/63049/" title="OVS Tunnel Options">http://zhangml.github.io/2020/63049/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -418,18 +429,21 @@
 		  
 		</div>
           <div class="post-tags">
-              <a href="/tags/c/" rel="tag"><i class="fa fa-tag"></i> c++</a>
+              <a href="/tags/OVS/" rel="tag"><i class="fa fa-tag"></i> OVS</a>
           </div>
 			
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/12/07/2020-12-07-git-rebase-%E5%91%BD%E4%BB%A4/" rel="prev" title="git rebase 命令">
-                  <i class="fa fa-chevron-left"></i> git rebase 命令
+                <a href="/2020/63670/" rel="prev" title="DevStack(Stein版)安装说明">
+                  <i class="fa fa-chevron-left"></i> DevStack(Stein版)安装说明
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/46552/" rel="next" title="git rebase 命令">
+                  git rebase 命令 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -575,6 +589,31 @@
 </script>
 
 
+<script src="//sdk.jinrishici.com/v2/browser/jinrishici.js"></script>
+<script>
+  console.log('今日诗词 - 开始加载...');
+  jinrishici.load((result) => {
+    let jrsc = document.getElementById('jrsc');
+    if (jrsc) {
+      console.log('今日诗词 - 标签获取成功.');
+    } else {
+      console.log('今日诗词 - 标签获取失败!');
+      return;
+    }
+    const data = result.data;
+    let author = data.origin.author;
+    let title = '《' + data.origin.title + '》';
+    let content = data.content.substr(0, data.content.length - 1);
+    let dynasty = data.origin.dynasty.substr(0, data.origin.dynasty.length - 1);
+    jrsc.innerText = content + ' @ ' + dynasty + '·' + author + title;
+    console.log('今日诗词 - 载入完毕.');
+    if (data.origin.author == '李白') {
+      let audio = document.createElement("audio");
+      audio.src = "/ding.mp3";
+      audio.play();
+    }
+  });
+</script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
